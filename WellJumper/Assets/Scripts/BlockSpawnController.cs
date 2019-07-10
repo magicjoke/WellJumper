@@ -6,6 +6,14 @@ public class BlockSpawnController : MonoBehaviour
 {
     public GameObject prefab;
 
+    private GameObject Player;
+
+    public void Start()
+    {
+        Player = GameObject.FindGameObjectWithTag("Player");
+        //Player = Player.GetComponent<PlayerController>();
+    }
+
     public void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -14,9 +22,22 @@ public class BlockSpawnController : MonoBehaviour
 
             if (hit.collider != null)
             {
-                Debug.Log("Target Position: " + hit.collider.gameObject.transform.position);
 
-                Instantiate(prefab, hit.collider.gameObject.transform.position, Quaternion.identity);
+                if(Player.GetComponent<PlayerController>().numJumps == 1)
+                {
+                    if (hit.collider.gameObject.tag == "Block")
+                    {
+                        Debug.Log("BLOCK!");
+
+                    }
+                    else
+                    {
+                        Debug.Log("Target Position: " + hit.collider.gameObject.transform.position);
+
+                        Instantiate(prefab, hit.collider.gameObject.transform.position, Quaternion.identity);
+                        Player.GetComponent<PlayerController>().numJumps--;
+                    }
+                }
 
             }
         }
