@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1336152401420775104}
   - component: {fileID: 7496316396012846352}
   - component: {fileID: 4736613427874806856}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PlaceBlock
   m_TagString: Block
   m_Icon: {fileID: 0}
@@ -46,6 +46,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -70,7 +71,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 20
-  m_Sprite: {fileID: 3024995512416385824, guid: 851321202d8abee47a7aa33c37a9c2de,
+  m_Sprite: {fileID: 7332416085570963489, guid: 016d9b965e6d58742892a0a6745e4fd2,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

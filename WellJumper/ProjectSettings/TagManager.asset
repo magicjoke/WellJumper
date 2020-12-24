@@ -9,6 +9,21 @@ TagManager:
   - DeathZone
   - Wall
   - Score
+  - BrokenBlock
+  - Coin
+  - Ground
+  - PauseOverlay
+  - GameOverOverlay
+  - JumperBlock
+  - GameStartOverlay
+  - JumperBlockLeft
+  - JumperBlockRight
+  - RotateBlock
+  - StickyBlockLeft
+  - StickyBlockRight
+  - StickyBlock
+  - BestScoreLine
+  - MoveBlock
   layers:
   - Default
   - TransparentFX
@@ -18,7 +33,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Wall
   - 
   - 
   - 
