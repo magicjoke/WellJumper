@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 6774919484214189049, guid: 016d9b965e6d58742892a0a6745e4fd2,
+  m_Sprite: {fileID: 7332416085570963489, guid: 016d9b965e6d58742892a0a6745e4fd2,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -123,9 +123,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1d5eb9776da14e4497d5fefc206a042, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  broken_one: {fileID: -114189766208603339, guid: 016d9b965e6d58742892a0a6745e4fd2,
+  broken_one: {fileID: 6774919484214189049, guid: 016d9b965e6d58742892a0a6745e4fd2,
+    type: 3}
+  broken_two: {fileID: -114189766208603339, guid: 016d9b965e6d58742892a0a6745e4fd2,
+    type: 3}
+  broken_three: {fileID: -5430391693221555613, guid: 016d9b965e6d58742892a0a6745e4fd2,
     type: 3}
   particle: {fileID: 5483481170186086523, guid: c86ae406bd8face4cb4818b5db3d37e7,
+    type: 3}
+  hitParticle: {fileID: 1398778599186879606, guid: 9a5bc78a4a91a4f409e81da4cc0e6551,
     type: 3}
   HP: 3
 --- !u!95 &1421781679

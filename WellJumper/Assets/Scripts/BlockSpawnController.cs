@@ -15,6 +15,11 @@ public class BlockSpawnController : MonoBehaviour
     public Tilemap tilemap;
     public TileBase tileBase;
 
+    public GameObject stageBroke;
+
+    // HitBlockParticle
+    public ParticleSystem hitBlockParticle;
+    public ParticleSystem destroyBlockParticle;
     public void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -27,7 +32,7 @@ public class BlockSpawnController : MonoBehaviour
 
         ////////////////////////////////
         Vector3Int tilemapPos = tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        Debug.Log(tilemapPos);
+        //Debug.Log(tilemapPos);
         Tile tile = tilemap.GetTile<Tile>(tilemapPos);
 
         //tilemap.SetTile(tilemapPos, tileBase);
@@ -68,22 +73,18 @@ public class BlockSpawnController : MonoBehaviour
                         hit.collider.gameObject.GetComponent<StickyBlockController>().checkStickedPlayer();
 
                     }
-                    //else if(hit.collider.gameObject.tag == "PlacementPlace")
-                    //{
-                    //    Debug.Log("PlacementPlace!");
-                    //}
                     else
                     {
-                        Debug.Log("Target Position: " + hit.collider.gameObject.transform.position);
+                        // Debug.Log("Target Position: " + hit.collider.gameObject.transform.position);
 
-                        GameObject spawnBlock = Instantiate(prefab, hit.collider.gameObject.transform.position, Quaternion.identity);
-                        gameController.GetComponent<GameController>().lastBlockPos = hit.collider.gameObject.transform.position;
-                        Sequence sequence = DOTween.Sequence()
-                           .Join(spawnBlock.transform.DOScale(new Vector3(0.7f, 1.4f), 0.1f).OnComplete(() => spawnBlock.transform.DOScale(new Vector3(1f, 1f), 0.1f)));
+                        // GameObject spawnBlock = Instantiate(prefab, hit.collider.gameObject.transform.position, Quaternion.identity);
+                        // gameController.GetComponent<GameController>().lastBlockPos = hit.collider.gameObject.transform.position;
+                        // Sequence sequence = DOTween.Sequence()
+                        //    .Join(spawnBlock.transform.DOScale(new Vector3(0.7f, 1.4f), 0.1f).OnComplete(() => spawnBlock.transform.DOScale(new Vector3(1f, 1f), 0.1f)));
 
-                        player.GetComponent<PlayerController>().numJumps--;
+                        // player.GetComponent<PlayerController>().numJumps--;
 
-                        Destroy(spawnBlock, 5f);
+                        // Destroy(spawnBlock, 5f);
                     }
                 }
 
@@ -122,15 +123,51 @@ public class BlockSpawnController : MonoBehaviour
 
                 if(hit.collider.gameObject.tag == "BrokenBlock")
                 {
-                    hit.collider.gameObject.GetComponent<BrokenBlock>().HP--;
+                    GameObject brkBlock = hit.collider.gameObject;
+                    Transform brkBlockTrans = hit.collider.gameObject.transform;
+                    brkBlock.GetComponent<BrokenBlock>().HP--;
+                    
+                    // GameObject particleClone = Instantiate(brkBlock.GetComponent<BrokenBlock>().hitParticle, new Vector3(brkBlockTrans.position.x, brkBlockTrans.position.y, brkBlockTrans.position.z), Quaternion.identity);
+                    // particleClone.transform.Rotate(90f,0f, 0f);
+                    // Destroy(particleClone, 2f);
+                    spawnHitParticle(brkBlockTrans);
+
                     Debug.Log("PlaceBrokenBlock!");
                 }
 
             } else {
                             
-                tilemap.SetTile(tilemapPos, tileBase);
+                //tilemap.SetTile(tilemapPos, tileBase);
+                StartCoroutine(destroyTileAfterTime(stageBroke, tilemap, tilemapPos, tileBase));
             }
         }
+    }
+
+    public IEnumerator destroyTileAfterTime(GameObject brknStage, Tilemap tilemap, Vector3Int tilePos, TileBase tileBase){
+
+        Vector3 wrldPos = tilemap.GetCellCenterWorld(tilePos);
+        Debug.Log(wrldPos);
+
+        tilemap.SetTile(tilePos, tileBase);
+        Instantiate(stageBroke, wrldPos, Quaternion.identity);
+        yield return new WaitForSeconds(1f);
+        spawnHitParticleCor(wrldPos, hitBlockParticle);
+        yield return new WaitForSeconds(1f);
+        spawnHitParticleCor(wrldPos, hitBlockParticle);
+        yield return new WaitForSeconds(1f);
+        spawnHitParticleCor(wrldPos, destroyBlockParticle);
+        tilemap.SetTile(tilePos, null);
+    }
+
+    public void spawnHitParticleCor(Vector3 brkBlockTrans, ParticleSystem particle){
+        ParticleSystem hitPart = Instantiate(particle, brkBlockTrans, Quaternion.identity);
+        hitPart.transform.Rotate(90f,0f, 0f);
+        Destroy(hitPart, 2f);
+    }
+    public void spawnHitParticle(Transform brkBlockTrans){
+        ParticleSystem hitPart = Instantiate(hitBlockParticle, new Vector3(brkBlockTrans.position.x, brkBlockTrans.position.y, brkBlockTrans.position.z), Quaternion.identity);
+        hitPart.transform.Rotate(90f,0f, 0f);
+        Destroy(hitPart, 2f);
     }
 
     public void stickyPlayerClick(){
