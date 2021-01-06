@@ -21,9 +21,10 @@ TagManager:
   - RotateBlock
   - StickyBlockLeft
   - StickyBlockRight
-  - StickyBlock
   - BestScoreLine
   - MoveBlock
+  - BubbleBlock
+  - CoinIMG
   layers:
   - Default
   - TransparentFX

@@ -55,6 +55,7 @@
      <Compile Include="Assets\Scripts\BestScore.cs" />
      <Compile Include="Assets\Scripts\BlockSpawnController.cs" />
      <Compile Include="Assets\Scripts\BrokenBlock.cs" />
+     <Compile Include="Assets\Scripts\BubbleBlockController.cs" />
      <Compile Include="Assets\Scripts\CameraFollow.cs" />
      <Compile Include="Assets\Scripts\GameController.cs" />
      <Compile Include="Assets\Scripts\Items\CoinController.cs" />
@@ -65,8 +66,8 @@
      <Compile Include="Assets\Scripts\MoveBlockController.cs" />
      <Compile Include="Assets\Scripts\Player\PlayerController.cs" />
      <Compile Include="Assets\Scripts\Player\RotateOverTime.cs" />
+     <Compile Include="Assets\Scripts\RotateBlockController.cs" />
      <Compile Include="Assets\Scripts\StageBreakController.cs" />
-     <Compile Include="Assets\Scripts\StickyBlockController.cs" />
      <None Include="Assets\DOTween\readme.txt" />
  <Reference Include="UnityEngine">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.3f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

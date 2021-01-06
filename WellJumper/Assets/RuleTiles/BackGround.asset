@@ -24,7 +24,6 @@ MonoBehaviour:
     - {fileID: -3223280671715609966, guid: 016d9b965e6d58742892a0a6745e4fd2, type: 3}
     - {fileID: -6393554783682931074, guid: 016d9b965e6d58742892a0a6745e4fd2, type: 3}
     - {fileID: 7829910216273383081, guid: 016d9b965e6d58742892a0a6745e4fd2, type: 3}
-    - {fileID: 5168681849455732472, guid: 016d9b965e6d58742892a0a6745e4fd2, type: 3}
     m_GameObject: {fileID: 0}
     m_AnimationSpeed: 1
     m_PerlinScale: 0.6

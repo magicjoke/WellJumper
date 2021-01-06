@@ -36,7 +36,7 @@ public class BlockSpawnController : MonoBehaviour
         Tile tile = tilemap.GetTile<Tile>(tilemapPos);
 
         //tilemap.SetTile(tilemapPos, tileBase);
-        Debug.Log(tile);
+        //Debug.Log(tile);
         ////////////////////////////////
 
         if (Input.GetMouseButtonDown(0))
@@ -52,7 +52,6 @@ public class BlockSpawnController : MonoBehaviour
                     if (hit.collider.gameObject.tag == "Block")
                     {
                         Debug.Log("BLOCK!");
-
                     }
                     else if(hit.collider.gameObject.tag == "BrokenBlock"){}
                     else if(hit.collider.gameObject.tag == "RotateBlock"){}
@@ -61,31 +60,19 @@ public class BlockSpawnController : MonoBehaviour
                         stickyPlayerClick();
                         Debug.Log("PlayerClicked");
                     }
-                    else if (hit.collider.gameObject.tag == "Coin")
-                    {
-                        gameController.GetComponent<GameController>().coins++;
-                        Destroy(hit.collider.gameObject);
-                        Debug.Log("Coin!");
-
-                    }
+                    else if (hit.collider.gameObject.tag == "Coin"){}
                     else if(hit.collider.gameObject.tag == "MoveBlock"){}
-                    else if(hit.collider.gameObject.tag == "StickyBlock"){
-                        hit.collider.gameObject.GetComponent<StickyBlockController>().checkStickedPlayer();
-
-                    }
-                    else
-                    {
+                    else if(hit.collider.gameObject.tag == "StickyBlock"){}
+                    else {
                         // Debug.Log("Target Position: " + hit.collider.gameObject.transform.position);
-
-                        // GameObject spawnBlock = Instantiate(prefab, hit.collider.gameObject.transform.position, Quaternion.identity);
-                        // gameController.GetComponent<GameController>().lastBlockPos = hit.collider.gameObject.transform.position;
-                        // Sequence sequence = DOTween.Sequence()
-                        //    .Join(spawnBlock.transform.DOScale(new Vector3(0.7f, 1.4f), 0.1f).OnComplete(() => spawnBlock.transform.DOScale(new Vector3(1f, 1f), 0.1f)));
-
-                        // player.GetComponent<PlayerController>().numJumps--;
-
-                        // Destroy(spawnBlock, 5f);
                     }
+                }
+
+                if (hit.collider.gameObject.tag == "Coin")
+                {
+                    gameController.GetComponent<GameController>().updateCoins(1);
+                    hit.collider.gameObject.GetComponent<Animator>().SetTrigger("CoinPickUp");
+                    Destroy(hit.collider.gameObject, 2f);
                 }
 
                 if(hit.collider.gameObject.tag == "BrokenBlock")
@@ -105,19 +92,30 @@ public class BlockSpawnController : MonoBehaviour
                     
 
                 }
-                if(hit.collider.gameObject.tag == "StickyBlock"){
+                if(hit.collider.gameObject.tag == "BubbleBlock"){
                     //stickyPlayerClick();
-                    hit.collider.gameObject.GetComponent<StickyBlockController>().checkStickedPlayer();
+                    //hit.collider.gameObject.GetComponent<StickyBlockController>().
+                    hit.collider.gameObject.GetComponent<BubbleBlockController>().checkStickedPlayer();
+                    //Destroy(hit.collider.gameObject);
                 }
                 if(hit.collider.gameObject.tag == "RotateBlock"){
 
-                    Transform hitTrans = hit.collider.gameObject.transform;
-                    float currRot =  hit.collider.gameObject.transform.rotation.eulerAngles.z;
-                    float transDeg = currRot + -90f;
+                    GameObject rotateBlock = hit.collider.gameObject;
+                    RotateBlockController rotateContr = rotateBlock.GetComponent<RotateBlockController>();
 
-                    hitTrans.DORotate(new Vector3(0, 0, transDeg), 1f);
+                    if(rotateContr.isRotating == true){
+                        Debug.Log("Still rotating");
+                    } else {
+                        Transform hitTrans = rotateBlock.transform;
+                        float currRot =  rotateBlock.transform.rotation.eulerAngles.z;
+                        float transDeg = currRot + -90f;
 
-                    Debug.Log("Rotate Block!");
+                        StartCoroutine(rotateContr.rotateFreeze(1f));
+                        //rotateContr.rotateFreeze(1f);
+                        hitTrans.DORotate(new Vector3(0, 0, transDeg), 1f);
+                        
+                        Debug.Log("Rotate Block!");
+                    }
                 }
 
 
@@ -136,9 +134,9 @@ public class BlockSpawnController : MonoBehaviour
                 }
 
             } else {
-                            
-                //tilemap.SetTile(tilemapPos, tileBase);
-                StartCoroutine(destroyTileAfterTime(stageBroke, tilemap, tilemapPos, tileBase));
+                if(gameController.GetComponent<GameController>().currentState != GameController.State.idle){
+                    StartCoroutine(destroyTileAfterTime(stageBroke, tilemap, tilemapPos, tileBase));
+                }
             }
         }
     }
@@ -146,7 +144,7 @@ public class BlockSpawnController : MonoBehaviour
     public IEnumerator destroyTileAfterTime(GameObject brknStage, Tilemap tilemap, Vector3Int tilePos, TileBase tileBase){
 
         Vector3 wrldPos = tilemap.GetCellCenterWorld(tilePos);
-        Debug.Log(wrldPos);
+        //Debug.Log(wrldPos);
 
         tilemap.SetTile(tilePos, tileBase);
         Instantiate(stageBroke, wrldPos, Quaternion.identity);
@@ -176,7 +174,7 @@ public class BlockSpawnController : MonoBehaviour
             player.GetComponent<PlayerController>().currentState = PlayerController.State.active;
 
             //player.GetComponent<PlayerController>().search();
-            string wallSide = player.GetComponent<PlayerController>().search();
+            string wallSide = player.GetComponent<PlayerController>().searchWall();
             float rnd = Random.Range(3f, 5f);
             if(wallSide == "WallRight"){
                 player.GetComponent<Rigidbody2D>().AddForce(new Vector2(player.transform.position.x - rnd, player.transform.position.y + 5f) * (100 / 2));

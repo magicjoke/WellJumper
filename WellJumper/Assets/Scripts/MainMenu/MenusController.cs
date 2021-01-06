@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MenusController : MonoBehaviour
 {
@@ -9,9 +10,15 @@ public class MenusController : MonoBehaviour
     [SerializeField] private GameObject gameController;
     [SerializeField] private GameObject player;
 
+    private int coins;
+    [SerializeField] private GameObject coinsText;
+
     public void Start(){
         gameController = GameObject.FindGameObjectWithTag("GameController");
         player = GameObject.FindGameObjectWithTag("Player");
+        coins = PlayerPrefs.GetInt("Coins");
+        coinsText.GetComponent<Text>().text = coins.ToString();
+        Debug.Log(coins);
     }
 
     public void StartGame(){
@@ -40,8 +47,15 @@ public class MenusController : MonoBehaviour
         SceneManager.LoadScene("TestScene");
     }
 
+    public void gameShop(){
+        Debug.Log("GameShop");
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene("CharacterShop");
+    }
+
     public void continueGame(){
         Time.timeScale = 1;
+        gameController.GetComponent<GameController>().currentState = GameController.State.active;
         gameController.GetComponent<GameController>().deActivatePause();
     }
     public void continueGameAds(){

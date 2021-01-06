@@ -11,10 +11,9 @@ GameObject:
   - component: {fileID: 5678886860463223591}
   - component: {fileID: 5678886860463223592}
   - component: {fileID: 5678886860463223593}
-  - component: {fileID: 5678886860463223590}
   m_Layer: 0
   m_Name: StickyBlock
-  m_TagString: StickyBlock
+  m_TagString: BubbleBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,18 +107,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.7, y: 0.7}
   m_EdgeRadius: 0
---- !u!114 &5678886860463223590
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5678886860463223594}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89e7892de7c586d45bb898bc62b9c42c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stickedPlayer: {fileID: 0}

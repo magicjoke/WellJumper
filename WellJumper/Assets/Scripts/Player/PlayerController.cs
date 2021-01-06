@@ -128,7 +128,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             //DOTween.KillAll();
-            PlayerPrefs.DeleteAll();
+            //PlayerPrefs.DeleteAll();
             currentState = State.active;
             freezeCharacter(false);
             GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.position.x + 4f, transform.position.y + 4f) * (speed * 1f));
@@ -159,18 +159,21 @@ public class PlayerController : MonoBehaviour
         }
         if (collision.gameObject.tag == "Coin")
         {
-            gameController.GetComponent<GameController>().coins++;
-            collision.gameObject.GetComponent<CoinController>().instParticles();                
-            //Destroy(collision.gameObject);
+            gameController.GetComponent<GameController>().updateCoins(1);
+            //collision.gameObject.GetComponent<CoinController>().instParticles(); 
+            collision.gameObject.GetComponent<Animator>().SetTrigger("CoinPickUp");
+            collision.gameObject.GetComponent<BoxCollider2D>().enabled = false;
+            Destroy(collision.gameObject, 1f);
+            //gameController.GetComponent<GameController>().coins
         }
-        if(collision.gameObject.tag == "StickyBlock"){
-            Transform stickyBlockTrans = collision.gameObject.transform;
-
+        if(collision.gameObject.tag == "BubbleBlock"){
+            Transform BubbleBlockTrans = collision.gameObject.transform;
+            this.transform.parent = collision.gameObject.transform;
 
             Sequence stickySequence = DOTween.Sequence()
-                .Join(transform.DOMove(new Vector3(stickyBlockTrans.position.x, stickyBlockTrans.transform.position.y, stickyBlockTrans.transform.position.z), 1f).OnComplete(() => currentState = State.sticked ));
+                .Join(transform.DOMove(new Vector3(BubbleBlockTrans.position.x, BubbleBlockTrans.transform.position.y, BubbleBlockTrans.transform.position.z), 1f).OnComplete(() => currentState = State.sticked ));
 
-            collision.gameObject.GetComponent<StickyBlockController>().stickedPlayer = this.gameObject;
+            collision.gameObject.GetComponent<BubbleBlockController>().stickedPlayer = this.gameObject;
 
 
         }
@@ -180,13 +183,22 @@ public class PlayerController : MonoBehaviour
         }
         if(collision.gameObject.tag == "JumperBlockLeft"){
             collision.gameObject.GetComponent<Animator>().SetTrigger("JumperActive");
-            GetComponent<Rigidbody2D>().velocity = Vector3.zero;
-            GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.position.x + 5f, transform.position.y + 5f) * (speed * 1.5f));
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            //GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.position.x + 5f, transform.position.y + 5f) * (speed * 1.5f));
+            //GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.position.x + 5f, transform.position.y + 5f) * speed);
+            GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(0, jumpRange.x), Random.Range(jumpRange.y, jumpRange.y)) * (speed * 1.5f));
+
+           
+            //GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(0, jumpRange.x), Random.Range(jumpRange.y, jumpRange.y)) * speed);
+            //Debug.Log("Jumper Left");
         }
         if(collision.gameObject.tag == "JumperBlockRight"){
             collision.gameObject.GetComponent<Animator>().SetTrigger("JumperActive");
-            GetComponent<Rigidbody2D>().velocity = Vector3.zero;
-            GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.position.x - 5f, transform.position.y + 5f) * (speed * 1.5f));
+            GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            //GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.position.x - 5f, transform.position.y + 5f) * (speed * 1.5f));
+            //GetComponent<Rigidbody2D>().AddForce(new Vector2(transform.position.x - 5f, transform.position.y + 5f) * speed);
+            GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-jumpRange.x, 0), Random.Range(jumpRange.y, jumpRange.y)) * (speed * 1.5f));
+            //Debug.Log("Jumper Right");
         }
     }
 
@@ -213,6 +225,9 @@ public class PlayerController : MonoBehaviour
         if(collision.gameObject.tag == "MoveBlock"){
             this.transform.parent = null;
         }
+        // if(collision.gameObject.tag == "BubbleBlock"){
+        //     this.transform.parent = null;
+        // }
     }
     // IEnumerator jumpCour()
     // {
@@ -247,16 +262,19 @@ public class PlayerController : MonoBehaviour
         Destroy(jumpPart, 2f);
 
 
-        string sideCheck = search();
+        string sideCheck = searchWall();
 
-        if(sideCheck == "WallLeft"){
+        if (sideCheck == "WallLeftRight"){
+            GetComponent<Rigidbody2D>().AddForce(new Vector2(0, Random.Range(jumpRange.y, jumpRange.y)) * speed);
+            Debug.Log("WallLeftRightJumpUP");
+        } else if(sideCheck == "WallLeft"){
             GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(0, jumpRange.x), Random.Range(jumpRange.y, jumpRange.y)) * speed);
         } else if(sideCheck == "WallRight"){
             GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-jumpRange.x, 0), Random.Range(jumpRange.y, jumpRange.y)) * speed);
         } else {
             GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-jumpRange.x, jumpRange.x), Random.Range(jumpRange.y, jumpRange.y)) * speed);
         }
-
+        Debug.Log("Jumpscasm");
         //GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-jumpRange.x, jumpRange.x), Random.Range(jumpRange.y, jumpRange.y)) * speed);
 
 
@@ -324,7 +342,7 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator characterDeath(){
         freezeCharacter(true);
-        string whereIsWall = search();
+        string whereIsWall = searchWall();
         if(whereIsWall == "WallLeft"){
             deathKnokback(new Vector2(this.transform.position.x +1f, this.transform.position.y + 1f));
         } else if (whereIsWall == "WallRight"){
@@ -336,7 +354,13 @@ public class PlayerController : MonoBehaviour
         } else {
             deathKnokback(new Vector2(this.transform.position.x, this.transform.position.y + 1f));
         }
-        gameController.GetComponent<GameController>().saveMaxHeight(maxPlayerHeight);
+        // max height
+        float curMaxHeigth = gameController.GetComponent<GameController>().getMaxHeigth();
+        if(curMaxHeigth < maxPlayerHeight){
+            gameController.GetComponent<GameController>().saveMaxHeight(maxPlayerHeight);
+        }
+        //
+        gameController.GetComponent<GameController>().saveCoins();
         yield return new WaitForSeconds(2f);
         gameController.GetComponent<GameController>().activateGameOver();
         freezeCharacter(false);
@@ -366,14 +390,15 @@ public class PlayerController : MonoBehaviour
                 });
     }
 
-    public string search()
+    public string searchWall()
     {
         RaycastHit2D wallLEFT = Physics2D.Raycast(this.transform.position, Vector2.left, wallCheckDistance, whatIsGround);
         RaycastHit2D wallRIGHT = Physics2D.Raycast(this.transform.position, Vector2.right, wallCheckDistance, whatIsGround);
         RaycastHit2D wallUP = Physics2D.Raycast(this.transform.position, Vector2.up, wallCheckDistance, whatIsGround);
         RaycastHit2D wallDOWN= Physics2D.Raycast(this.transform.position, Vector2.down, wallCheckDistance, whatIsGround);
 
-        if (wallLEFT) { return "WallLeft"; }
+        if (wallLEFT && wallRIGHT){ return "WallLeftRight"; }
+        else if (wallLEFT) { return "WallLeft"; }
         else if (wallRIGHT) { return "WallRight"; } 
         else if (wallUP) { return "WallUp"; }
         else if (wallDOWN) { return "WallDown"; }

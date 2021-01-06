@@ -5,7 +5,7 @@ using UnityEngine;
 public class LevelSpawner : MonoBehaviour
 {
 
-    public GameObject levelLayout;
+    public List<GameObject> levelLayouts;
 
 
     void Start()
@@ -15,9 +15,11 @@ public class LevelSpawner : MonoBehaviour
 
     IEnumerator spawnLevel()
     {
+        int rndmLayout = Random.Range(0, (levelLayouts.Count));
+
         yield return new WaitForSeconds(4f);
-        Instantiate(levelLayout, transform.position,transform.rotation);
-        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 14);
+        Instantiate(levelLayouts[rndmLayout], transform.position,transform.rotation);
+        this.transform.position = new Vector3(this.transform.position.x, this.transform.position.y + 15);
         StartCoroutine(spawnLevel());
     }
 }
