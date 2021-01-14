@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEditor;
+using System.Linq;
 using UnityEngine.UI;
 using DG.Tweening;
 
@@ -51,6 +53,9 @@ public class PlayerController : MonoBehaviour
         sticked
     }
 
+    //skins
+     private Object[] textures;
+
     void Start()
     {
         jumpOnce = true;
@@ -64,6 +69,18 @@ public class PlayerController : MonoBehaviour
 
         // Anim
         GetComponent<Animator>().Play("Idle");
+        getSkin();
+    }
+
+    public void getSkin(){
+        string currentSkinName = PlayerPrefs.GetString("CurrentSkinName");
+        var textures = Resources.LoadAll("Skins", typeof(SkinsScriptableObject)).Cast<SkinsScriptableObject>().ToArray();
+        foreach (var t in textures){
+            if(currentSkinName == t.skinName ){
+                GetComponent<SpriteRenderer>().sprite = t.skinSprite;
+                GetComponent<Animator>().runtimeAnimatorController = t.skinAnim;
+            }
+        }
     }
 
     void ChangeDirection() //change sprite xy

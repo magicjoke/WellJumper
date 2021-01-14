@@ -19133,6 +19133,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3984152714691248398, guid: dee2a950b9d6ec147a1e6661d54d54e6,
         type: 3}
+    - target: {fileID: 2958106814442304991, guid: 3cea41285054f7d4bbd18ab7c1b02176,
+        type: 3}
+      propertyPath: tileBase
+      value: 
+      objectReference: {fileID: 11400000, guid: b5acbd7889fb7824fbdf56824492c283,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3cea41285054f7d4bbd18ab7c1b02176, type: 3}
 --- !u!114 &3108584980253705869
@@ -20107,6 +20113,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 7016955394468442082, guid: a89110e6dfb4d7949bec6106a3965c0b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7016955394468442094, guid: a89110e6dfb4d7949bec6106a3965c0b,
         type: 3}

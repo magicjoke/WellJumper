@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6146c7d3e2f693044abc6e516a1e6e5f, type: 3}
+  m_Name: DuckSkin
+  m_EditorClassIdentifier: 
+  id: 1
+  skinName: Duck
+  skinSprite: {fileID: 21300000, guid: fbcb613032762024c95002b482253169, type: 3}
+  skinAnim: {fileID: 9100000, guid: 4de41c7f8bfb9d04285e9f003facb7a1, type: 2}
+  skinPrice: 764

@@ -135,7 +135,8 @@ public class BlockSpawnController : MonoBehaviour
 
             } else {
                 if(gameController.GetComponent<GameController>().currentState != GameController.State.idle){
-                    StartCoroutine(destroyTileAfterTime(stageBroke, tilemap, tilemapPos, tileBase));
+                    //StartCoroutine(destroyTileAfterTime(stageBroke, tilemap, tilemapPos, tileBase));
+                    tilemap.SetTile(tilemapPos, tileBase);
                 }
             }
         }
